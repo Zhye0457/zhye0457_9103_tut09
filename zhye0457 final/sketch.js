@@ -108,3 +108,103 @@ function windowResized() {
   resizeCanvas(windowWidth, windowHeight);
   initializeArtwork();
 }
+// Class representing a decorated wheel
+class Wheel {
+  constructor(x, y, radius, palette) {
+    this.x = x;
+    this.y = y;
+    this.radius = radius;
+    this.originalRadius = radius;
+    this.colors = palette;
+    this.stemAngle = random(TWO_PI); // Angle for decorative stem
+  }
+
+  display() {
+    push();
+    translate(this.x, this.y);
+    this.drawBaseCircle();
+    this.drawOuterDots();
+    this.drawSpokes();
+    this.drawInnerCircles();
+    this.drawStem();
+    pop();
+  }
+
+  drawBaseCircle() {
+    noStroke();
+    fill(this.colors[0]);
+    circle(0, 0, this.radius * 2);
+  }
+
+  drawOuterDots() {
+    const dotCount = 40;
+    const dotRadius = this.radius * 0.9;
+    const dotSize = this.radius * 0.08;
+    fill(this.colors[1]);
+    noStroke();
+    for (let i = 0; i < dotCount; i++) {
+      const angle = map(i, 0, dotCount, 0, TWO_PI);
+      const dx = cos(angle) * dotRadius;
+      const dy = sin(angle) * dotRadius;
+      circle(dx, dy, dotSize);
+    }
+  }
+
+  drawSpokes() {
+    const spokeCount = 24;
+    const innerRadius = this.radius * 0.55;
+    const outerRadius = this.radius * 0.8;
+    stroke(this.colors[3]);
+    strokeWeight(this.radius * 0.03);
+    for (let i = 0; i < spokeCount; i++) {
+      const angle = map(i, 0, spokeCount, 0, TWO_PI);
+      const x1 = cos(angle) * innerRadius;
+      const y1 = sin(angle) * innerRadius;
+      const x2 = cos(angle) * outerRadius;
+      const y2 = sin(angle) * outerRadius;
+      line(x1, y1, x2, y2);
+    }
+  }
+
+  drawInnerCircles() {
+    noStroke();
+    fill(this.colors[2]);
+    circle(0, 0, this.radius * 0.6);
+
+    fill(this.colors[3]);
+    const innerDotCount = 20;
+    const innerDotRadius = this.radius * 0.4;
+    const innerDotSize = this.radius * 0.06;
+    for (let i = 0; i < innerDotCount; i++) {
+      const angle = map(i, 0, innerDotCount, 0, TWO_PI);
+      const dx = cos(angle) * innerDotRadius;
+      const dy = sin(angle) * innerDotRadius;
+      circle(dx, dy, innerDotSize);
+    }
+
+    fill(this.colors[4]);
+    circle(0, 0, this.radius * 0.3);
+
+    fill(this.colors[0]);
+    circle(0, 0, this.radius * 0.15);
+  }
+
+  drawStem() {
+    stroke(this.colors[1]);
+    strokeWeight(this.radius * 0.04);
+    noFill();
+    const startX = cos(this.stemAngle) * (this.radius * 0.075);
+    const startY = sin(this.stemAngle) * (this.radius * 0.075);
+    const endX = cos(this.stemAngle) * (this.radius * 0.5);
+    const endY = sin(this.stemAngle) * (this.radius * 0.5);
+    const controlX = cos(this.stemAngle + 0.5) * (this.radius * 0.4);
+    const controlY = sin(this.stemAngle + 0.5) * (this.radius * 0.4);
+    beginShape();
+    vertex(startX, startY);
+    quadraticVertex(controlX, controlY, endX, endY);
+    endShape();
+    noStroke();
+    fill(this.colors[1]);
+    circle(endX, endY, this.radius * 0.08);
+  }
+}
