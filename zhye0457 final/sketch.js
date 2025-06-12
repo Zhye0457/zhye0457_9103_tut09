@@ -208,3 +208,69 @@ class Wheel {
     circle(endX, endY, this.radius * 0.08);
   }
 }
+// Class for visual connectors between wheels
+class Connector {
+  constructor(wheel1, wheel2, connectColor) {
+    this.w1 = wheel1;
+    this.w2 = wheel2;
+    this.color = connectColor;
+    this.angle = atan2(this.w2.y - this.w1.y, this.w2.x - this.w1.x);
+
+    this.startPoint = createVector(
+      this.w1.x + cos(this.angle) * this.w1.radius,
+      this.w1.y + sin(this.angle) * this.w1.radius
+    );
+    this.endPoint = createVector(
+      this.w2.x + cos(this.angle + PI) * this.w2.radius,
+      this.w2.y + sin(this.angle + PI) * this.w2.radius
+    );
+  }
+
+  display() {
+    stroke(this.color);
+    strokeWeight(5);
+    noFill();
+    line(this.startPoint.x, this.startPoint.y, this.endPoint.x, this.endPoint.y);
+
+    let midX = (this.startPoint.x + this.endPoint.x) / 2;
+    let midY = (this.startPoint.y + this.endPoint.y) / 2;
+    let distBetweenWheels = dist(this.startPoint.x, this.startPoint.y, this.endPoint.x, this.endPoint.y);
+
+    const linkSize = 10;
+    const numLinks = floor(distBetweenWheels / (linkSize * 1.5));
+    if (numLinks > 0) {
+      for (let i = 0; i <= numLinks; i++) {
+        let lerpAmount = map(i, 0, numLinks, 0, 1);
+        let linkX = lerp(this.startPoint.x, this.endPoint.x, lerpAmount);
+        let linkY = lerp(this.startPoint.y, this.endPoint.y, lerpAmount);
+        fill(255, 200, 100);
+        stroke(this.color);
+        strokeWeight(1);
+        circle(linkX, linkY, linkSize);
+        fill(0);
+        noStroke();
+        circle(linkX, linkY, linkSize * 0.4);
+      }
+    }
+
+    fill(255);
+    stroke(this.color);
+    strokeWeight(3);
+    circle(midX, midY, 20);
+
+    fill(this.color);
+    noStroke();
+    circle(midX, midY, 10);
+
+    fill(255, 200, 100);
+    const numSmallDots = 8;
+    const smallDotRadius = 15;
+    const smallDotSize = 4;
+    for (let i = 0; i < numSmallDots; i++) {
+      let angle = map(i, 0, numSmallDots, 0, TWO_PI);
+      let dx = midX + cos(angle) * smallDotRadius;
+      let dy = midY + sin(angle) * smallDotRadius;
+      circle(dx, dy, smallDotSize);
+    }
+  }
+}
