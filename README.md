@@ -1,29 +1,30 @@
-# Quiz 8 – Design Research for Major Assignment
+# Generative Artwork with Perlin Noise Animation
+Since I chose to use perlin noise to refine my animation, I didn't do any specific interactions.
 
-## Part 1: Imaging Technique Inspiration
+##  How to Interact
+Simply open the HTML file in a browser.
+Watch the wheels expand and contract using Perlin noise.
+The animation responds over time — no user input required.
 
-**Inspiration Source:** *Dark Souls III – Opening Cinematic*
+##  My Individual Animation Approach
+I chose to animate **wheel sizes (radii)** using **Perlin noise**.
+This creates a soft, organic pulsing effect across the canvas.
 
-The cinematic style of *Dark Souls III* inspires my project with its desaturated color palette, dramatic lighting, and decayed fantasy environments. I want to incorporate the use of backlit fog, high-contrast lighting, and ruined architecture to build an epic medieval atmosphere. These techniques align perfectly with my assignment's theme of a knight venturing through a broken world.
+##  Animation Driver: Perlin Noise
+I used the `noise()` function in p5.js to animate the radius of each wheel. The radius changes over time based on a Perlin noise value with some exaggeration for visual effect.
 
-**Screenshots:**
+##  Unique Visual Feature
+My code animates the **radius** of each wheel.
+In contrast, other group members may animate color, visibility, or position.
+This ensures each submission is distinct and contributes uniquely to the group project.
 
-[screenshots (files.fm)](https://files.fm/u/bzny2sxjfk)
+##  Inspiration Reference
+Inspired by the colorful radial symmetry and rhythm found in Pacita Abad’s paintings.
+Influenced by generative art using organic motion — e.g., [Tyler Hobbs](https://tylerxhobbs.com/) and p5.js examples with noise-based animation.
 
-
-## Part 2: Coding Technique Exploration
-
-**Technique:** *Three.js Volumetric Lighting Shader*
-
-To achieve the same moody and atmospheric lighting as Dark Souls, I found a volumetric light shader implemented in Three.js. It creates fog rays and depth effects that simulate light scattering through dusty air, enhancing the epic and ruined feeling in real-time 3D. This technique is useful for prototyping lighting before final rendering.
-
-**Screenshot:**
-
-![Volumetric Light Shader](https://raw.githubusercontent.com/mrdoob/three.js/dev/examples/screenshots/webgl_postprocessing_godrays.jpg)
-
-**Example Link:**  
-[Three.js Godrays / Volumetric Light Shader Example](https://threejs.org/examples/?q=god#webgl_postprocessing_godrays)  
-[View Source Code on GitHub](https://github.com/mrdoob/three.js/blob/dev/examples/webgl_postprocessing_godrays.html)
-
-
-### Commit Label: `Quiz 8`
+## Technical Summary
+I added a global `t` variable as a time tracker.
+For each frame, I used `noise(t + i * 10)` to get a unique but continuous value per wheel.
+Then, I set `radius = originalRadius * (0.7 + n * 1.4)` to exaggerate the fluctuation.
+let n = noise(t + i * 10);
+wheels[i].radius = wheels[i].originalRadius * (0.7 + n * 1.4);

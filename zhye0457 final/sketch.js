@@ -274,3 +274,7 @@ class Connector {
     }
   }
 }
+function windowResized() {
+  resizeCanvas(windowWidth, windowHeight);
+  initializeArtwork();
+}
